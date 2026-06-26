@@ -382,24 +382,33 @@ export default function Album() {
 
       <style>{`
         *{box-sizing:border-box;margin:0;padding:0;}
-        button{border:none;cursor:pointer;background:transparent;}
+        html,body,#root{height:100%;width:100%;overflow-x:hidden;}
+        body{-webkit-text-size-adjust:100%;overscroll-behavior:none;}
+        button{border:none;cursor:pointer;background:transparent;-webkit-tap-highlight-color:transparent;}
+        img{max-width:100%;}
       `}</style>
     </div>
   );
 }
 
+// Responsive book width: limited by viewport width AND height, so the 3:4
+// book always fits fully on screen (phone, tablet, desktop, landscape).
+// ~190px reserves room for the info strip, nav row, gaps and padding.
+const BOOK_MAX = "min(490px, 92vw, calc((100dvh - 190px) * 0.75))";
+
 const s = {
   root:{
-    minHeight:"100vh", background:"#0c0c0c",
+    minHeight:"100dvh", background:"#0c0c0c",
     display:"flex", flexDirection:"column",
     alignItems:"center", justifyContent:"center",
-    gap:18, padding:"20px 80px",
+    gap:"clamp(10px,2.4vh,18px)",
+    padding:"clamp(12px,3vh,20px) clamp(12px,5vw,80px)",
     fontFamily:"system-ui,-apple-system,sans-serif",
     position:"relative", overflow:"hidden", userSelect:"none",
   },
   bgGlow:{position:"absolute",inset:"-20%",pointerEvents:"none",zIndex:0},
   bookWrap:{
-    position:"relative", width:"100%", maxWidth:490, zIndex:1,
+    position:"relative", width:"100%", maxWidth:BOOK_MAX, zIndex:1,
     filter:"drop-shadow(0 50px 100px rgba(0,0,0,0.95)) drop-shadow(0 15px 30px rgba(0,0,0,0.7))",
   },
   pageArea:{
@@ -433,13 +442,13 @@ const s = {
     width:"100%",height:"100%",display:"flex",flexDirection:"column",
     alignItems:"center",justifyContent:"center",background:"#0e0e0e",gap:10,
   },
-  missYear:{fontSize:76,fontWeight:900,lineHeight:1,letterSpacing:-3},
-  missHost:{fontSize:16,color:"rgba(255,255,255,0.3)",fontWeight:500},
+  missYear:{fontSize:"clamp(48px,16vw,76px)",fontWeight:900,lineHeight:1,letterSpacing:-3},
+  missHost:{fontSize:"clamp(13px,4vw,16px)",color:"rgba(255,255,255,0.3)",fontWeight:500},
   missHint:{fontSize:11,color:"rgba(255,255,255,0.15)",letterSpacing:2,textTransform:"uppercase"},
   uploadBtn:{marginTop:14,border:"none",padding:"11px 26px",borderRadius:10,cursor:"pointer",fontWeight:700,fontSize:13},
   strip:{
     display:"flex",alignItems:"center",gap:10,
-    width:"100%",maxWidth:490,zIndex:1,
+    width:"100%",maxWidth:BOOK_MAX,zIndex:1,
     background:"rgba(255,255,255,0.03)",
     border:"1px solid",borderRadius:10,padding:"9px 14px",
     backdropFilter:"blur(12px)",
@@ -447,7 +456,7 @@ const s = {
   dot0:{width:8,height:8,borderRadius:"50%",flexShrink:0,transition:"background 0.6s,box-shadow 0.6s"},
   stripText:{flex:1,fontSize:13,color:"rgba(255,255,255,0.6)",fontWeight:500,letterSpacing:0.3},
   stripCount:{fontSize:11,color:"rgba(255,255,255,0.2)",fontFamily:"monospace",letterSpacing:1},
-  nav:{display:"flex",alignItems:"center",width:"100%",maxWidth:490,gap:14,zIndex:1},
+  nav:{display:"flex",alignItems:"center",width:"100%",maxWidth:BOOK_MAX,gap:14,zIndex:1},
   navBtn:{
     width:44,height:44,borderRadius:10,fontSize:26,color:"#fff",
     background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.1)",
